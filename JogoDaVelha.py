@@ -29,7 +29,8 @@ class Tabuleiro:
                 return True
     
     def checaMarcacao(self, linha, coluna, tabuleiro):
-        if tabuleiro[linha][coluna].vencedor == None:
+        vencedor = tabuleiro[linha][coluna].vencedor
+        if vencedor == None or vencedor=="-":
             return False
         return True
 
@@ -93,13 +94,18 @@ class TabuleiroMacro(Tabuleiro):
                 print()
             print()
 
+    def imprimeMicroTabuleirosDisponiveis(self):
+        print("Micro-tabuleiros disponíveis:", end=" ")
+        for i in range(len(self.posicoesLivres)):
+            print(self.posicoesLivres[i], end=" ")
+        print()
+
     def jogada(self, microTabuleiro, jogador, linha, coluna):
         microTab = self.tabuleiro[microTabuleiro//3][microTabuleiro%3]
         microTab.marcaQuadrado(linha, coluna, jogador)
         if microTab.vencedor == jogador:
             self.posicoesLivres.remove(microTabuleiro)
-            vencedor = self.verificaVencedor(jogador,microTabuleiro//3, microTabuleiro%3, self.tabuleiro)
-            if vencedor:
+            if self.verificaVencedor(jogador,microTabuleiro//3, microTabuleiro%3, self.tabuleiro):
                 self.posicoesLivres.clear()
                 self.vencedor = jogador
                 self.fimDeJogo = True
@@ -119,17 +125,22 @@ class JogadorHumano(Jogador):
         Jogador.__init__(self, nome, tipo)
     
     def escolhePosicao(self,tabuleiro):
-        print("Micro-tabuleiros disponíveis:", end=" ")
-        for i in range(len(tabuleiro.posicoesLivres)):
-            print(tabuleiro.posicoesLivres[i], end=" ")
-        print()
+        tabuleiro.imprimeMicroTabuleirosDisponiveis()
         microTabuleiro = int(input("Selecione o micro-tabuleiro que você quer jogar: "))
+        
+        while tabuleiro.checaMarcacao(microTabuleiro//3,microTabuleiro%3,tabuleiro.tabuleiro):
+            print("Esse tabuleiro já está marcado, selecione outro!")
+            microTabuleiro = int(input("Selecione o micro-tabuleiro que você quer jogar: "))
+
         microTab = tabuleiro.tabuleiro[microTabuleiro//3][microTabuleiro%3]
         microTab.imprime()
         posicao = int(input("Selecione a posição que deseja marcar: "))
-        linha = posicao//3
-        coluna = posicao%3
-        tabuleiro.jogada(microTabuleiro, self.tipo, linha, coluna)
+
+        while microTab.checaMarcacao(posicao//3,posicao%3,microTab.tabuleiro):
+            print("Essa posição já está marcado, selecione outra!")
+            posicao = int(input("Selecione a posição que deseja marcar: "))
+            
+        tabuleiro.jogada(microTabuleiro, self.tipo, posicao//3, posicao%3)
         self.numJogadas += 1
 
 class JogadorComeCru(Jogador):
@@ -142,6 +153,7 @@ class JogadorComeCru(Jogador):
         linha = microTab.posicoesLivres[0]//3
         coluna = microTab.posicoesLivres[0]%3
         tabuleiro.jogada(microTabuleiro, self.tipo, linha, coluna)
+        self.numJogadas+=1
 
 class JogadorEstabanado(Jogador):
     def __init__(self, nome, tipo):
@@ -155,6 +167,7 @@ class JogadorEstabanado(Jogador):
         linha = microTab.posicoesLivres[indice]//3
         coluna = microTab.posicoesLivres[indice]%3
         tabuleiro.jogada(microTabuleiro,self.tipo,linha, coluna)
+        self.numJogadas+=1
 
 def selecionaTipo(tipoJogador, XouO):
     nome = input("Digite o nome desse jogador: ")
@@ -185,12 +198,12 @@ def main():
         tabuleiro.imprime()
         print("\n")
         if jogador1.numJogadas > jogador2.numJogadas:
+            print(f'Vez de {jogador2.nome}:')
             jogador2.escolhePosicao(tabuleiro)
-            jogador2.numJogadas += 1
 
         else:
+            print(f'Vez de {jogador1.nome}:')
             jogador1.escolhePosicao(tabuleiro)
-            jogador1.numJogadas += 1
     tabuleiro.imprime()
     if tabuleiro.vencedor == None:
         print("O jogo deu velha")
