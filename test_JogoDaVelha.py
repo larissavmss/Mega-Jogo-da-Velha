@@ -21,7 +21,7 @@ class TestaMicroTabuleiro:
             i +=1
         assert micro.vencedor == resultado
 
-@pytest.mark.parametrize("microTab, resultado", [([4,7,5,3,6,2,0,8,1],None),([0,6,5,2,4,3,8],"X"),([0,4,2,1,7,8,6,3,5], None),
+@pytest.mark.parametrize("microTab, resultado", [([4,7,5,3,6,2,0,8,1],"V"),([0,6,5,2,4,3,8],"X"),([0,4,2,1,7,8,6,3,5], "V"),
 ([3,7,5,4,1,8,0,6],"O"),([2,3,8,5,4,6,0],"X"), ([4,5,7,1,3,2,8,0],"O")])
 class TestaMacroTabuleiro:
     def test_jogada(self, microTab, resultado):
@@ -54,8 +54,35 @@ class TestaEscolhePosicao:
         assert tabuleiro.tabuleiro[0][0].vencedor == tabuleiro.tabuleiro[0][1].vencedor== tabuleiro.tabuleiro[0][2].vencedor == "X"
         
 class TestaMain:
-    def test_jogoHH(self):
-
-    def test_jogoHE(self):
+    def test_jogoCCxCC(self):
+        jogador1 = JogadorComeCru("player1", "X")
+        jogador2 = JogadorComeCru("player2", "O")
+        tabuleiro = TabuleiroMacro()
+        while not(tabuleiro.fimDeJogo):
+            if jogador1.numJogadas > jogador2.numJogadas:
+                jogador2.escolhePosicao(tabuleiro)
+            else:
+                jogador1.escolhePosicao(tabuleiro)
+        assert tabuleiro.vencedor == "X"
     
-    def test_jogoEE(self):
+    def test_jogoCCxE(self):
+        jogador1 = JogadorComeCru("player1", "X")
+        jogador2 = JogadorEstabanado("player2", "O")
+        tabuleiro = TabuleiroMacro()
+        while not(tabuleiro.fimDeJogo):
+            if jogador1.numJogadas > jogador2.numJogadas:
+                jogador2.escolhePosicao(tabuleiro)
+            else:
+                jogador1.escolhePosicao(tabuleiro)
+        assert tabuleiro.vencedor != None
+
+    def test_jogoExE(self):
+        jogador1 = JogadorEstabanado("player1", "X")
+        jogador2 = JogadorEstabanado("player2", "O")
+        tabuleiro = TabuleiroMacro()
+        while not(tabuleiro.fimDeJogo):
+            if jogador1.numJogadas > jogador2.numJogadas:
+                jogador2.escolhePosicao(tabuleiro)
+            else:
+                jogador1.escolhePosicao(tabuleiro)
+        assert tabuleiro.vencedor != None

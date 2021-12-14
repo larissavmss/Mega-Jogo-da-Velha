@@ -111,6 +111,7 @@ class TabuleiroMacro(Tabuleiro):
                 self.fimDeJogo = True
                 return
             elif len(self.posicoesLivres) == 0:
+                self.vencedor = "V"
                 self.fimDeJogo = True
 
 
@@ -205,7 +206,7 @@ def main():
             print(f'Vez de {jogador1.nome}:')
             jogador1.escolhePosicao(tabuleiro)
     tabuleiro.imprime()
-    if tabuleiro.vencedor == None:
+    if tabuleiro.vencedor == "V":
         print("O jogo deu velha")
     elif tabuleiro.vencedor == "X":
         print(f'{jogador1.nome} é o vencedor')
