@@ -1,4 +1,3 @@
-#!/usr/bin/python3.8
 # -*- coding: utf-8 -*-
 import random
 
@@ -64,20 +63,21 @@ class TabuleiroMicro(Tabuleiro):
         
         vencedor = self.verificaVencedor(jogador, linha, coluna, self.tabuleiro)
         if vencedor:
-            self.vencedor = jogador
-            self.posicoesLivres.clear()
-            print("Micro-tabuleiro fechado: ")
-            self.imprime()
-            print()
-            for i in range(3):
-                for j in range(3):
-                    self.tabuleiro[i][j].vencedor = self.vencedor
-
+            self.fechaTabuleiro(jogador)
 
         elif len(self.posicoesLivres) == 0:
             self.vencedor = "V" #Velha
     
-    
+    def fechaTabuleiro(self, jogador):
+        self.vencedor = jogador
+        self.posicoesLivres.clear()
+        print("Micro-tabuleiro fechado: ")
+        self.imprime()
+        print()
+        for i in range(3):
+            for j in range(3):
+                self.tabuleiro[i][j].vencedor = self.vencedor
+
 
 class TabuleiroMacro(Tabuleiro):
     def __init__(self):
