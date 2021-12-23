@@ -103,7 +103,7 @@ class TabuleiroMacro(Tabuleiro):
     def jogada(self, microTabuleiro, jogador, linha, coluna):
         microTab = self.tabuleiro[microTabuleiro//3][microTabuleiro%3]
         microTab.marcaQuadrado(linha, coluna, jogador)
-        if microTab.vencedor == jogador:
+        if microTab.vencedor == jogador or microTab.vencedor == "V":
             self.posicoesLivres.remove(microTabuleiro)
             if self.verificaVencedor(jogador,microTabuleiro//3, microTabuleiro%3, self.tabuleiro):
                 self.posicoesLivres.clear()
@@ -111,6 +111,7 @@ class TabuleiroMacro(Tabuleiro):
                 self.fimDeJogo = True
                 return
             elif len(self.posicoesLivres) == 0:
+                self.posicoesLivres.clear()
                 self.vencedor = "V"
                 self.fimDeJogo = True
 
@@ -161,6 +162,7 @@ class JogadorEstabanado(Jogador):
         Jogador.__init__(self, nome, tipo)
 
     def escolhePosicao(self, tabuleiro):
+        
         indice = random.randint(0,len(tabuleiro.posicoesLivres)-1)
         microTabuleiro = tabuleiro.posicoesLivres[indice]
         microTab = tabuleiro.tabuleiro[microTabuleiro//3][microTabuleiro%3]

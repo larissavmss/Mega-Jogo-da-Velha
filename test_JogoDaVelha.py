@@ -54,7 +54,8 @@ class TestaEscolhePosicao:
         assert tabuleiro.tabuleiro[0][0].vencedor == tabuleiro.tabuleiro[0][1].vencedor== tabuleiro.tabuleiro[0][2].vencedor == "X"
         
 class TestaMain:
-    def test_jogoCCxCC(self):
+    @pytest.mark.parametrize("repeticoes", [1,2,3,4,5,6,7,8,9,10])
+    def test_jogoCCxCC(self, repeticoes):
         jogador1 = JogadorComeCru("player1", "X")
         jogador2 = JogadorComeCru("player2", "O")
         tabuleiro = TabuleiroMacro()
@@ -64,8 +65,8 @@ class TestaMain:
             else:
                 jogador1.escolhePosicao(tabuleiro)
         assert tabuleiro.vencedor == "X"
-    
-    def test_jogoCCxE(self):
+    @pytest.mark.parametrize("repeticoes", [1,2,3,4,5,6,7,8,9,10])
+    def test_jogoCCxE(self, repeticoes):
         jogador1 = JogadorComeCru("player1", "X")
         jogador2 = JogadorEstabanado("player2", "O")
         tabuleiro = TabuleiroMacro()
@@ -75,8 +76,8 @@ class TestaMain:
             else:
                 jogador1.escolhePosicao(tabuleiro)
         assert tabuleiro.vencedor != None
-
-    def test_jogoExE(self):
+    @pytest.mark.parametrize("repeticoes", [1,2,3,4,5,6,7,8,9,10])
+    def test_jogoExE(self, repeticoes):
         jogador1 = JogadorEstabanado("player1", "X")
         jogador2 = JogadorEstabanado("player2", "O")
         tabuleiro = TabuleiroMacro()
