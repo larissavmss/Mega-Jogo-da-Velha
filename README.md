@@ -1,6 +1,5 @@
-# MAC0216-EP4
-Aluno: Larissa Vitória Medeiros Silva <br />
-NUSP: 11276023
+# Exercício programa de Tecnicas de programação (MAC0216) 
+
 ## Instalação:
 Faça o Donwload da pasta no seu computador e rode JogoDaVelha.py
 
