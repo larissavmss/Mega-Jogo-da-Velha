@@ -1,5 +1,5 @@
 # Exercício programa de Tecnicas de programação (MAC0216) 
-
+# Mega jogo da velha:
 ## Instalação:
 Faça o Donwload da pasta no seu computador e rode JogoDaVelha.py
 
